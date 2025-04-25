@@ -6,9 +6,16 @@ interface NumberInputProps {
   isDisabled?: boolean;
   label?: string;
   autofocus?: boolean;
+  type?: string; // Added type property to support password/text toggle
 }
 
-const NumberInput = ({ onComplete, isDisabled = false, label, autofocus = false }: NumberInputProps) => {
+const NumberInput = ({ 
+  onComplete, 
+  isDisabled = false, 
+  label, 
+  autofocus = false,
+  type = "text" // Default to "text" if not provided
+}: NumberInputProps) => {
   const [digits, setDigits] = useState<string[]>(Array(4).fill(''));
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -101,7 +108,7 @@ const NumberInput = ({ onComplete, isDisabled = false, label, autofocus = false 
             key={index}
             ref={inputRefs[index]}
             className="digit-input"
-            type="text" 
+            type={type} // Use the type prop here
             inputMode="numeric"
             pattern="[1-9]"
             maxLength={1}
