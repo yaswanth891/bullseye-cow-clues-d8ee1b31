@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import NumberInput from "./NumberInput";
 import GuessHistory from "./GuessHistory";
@@ -9,6 +9,7 @@ import {
   isValidGuess 
 } from "@/utils/gameUtils";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 interface GamePlayProps {
   mode: 'two-player' | 'computer';
@@ -41,6 +42,7 @@ const GamePlay = ({
   const [computerThinking, setComputerThinking] = useState(false);
   const [playerWaitingForFeedback, setPlayerWaitingForFeedback] = useState(false);
   const { toast } = useToast();
+  const [showPlayerSecretNumber, setShowPlayerSecretNumber] = useState(mode === 'computer');
   
   // Update local state when props change (e.g., when loading from localStorage)
   useEffect(() => {
@@ -247,8 +249,31 @@ const GamePlay = ({
     setPlayerTurn(true);
   };
 
+  const togglePlayerSecretNumberVisibility = () => {
+    setShowPlayerSecretNumber(!showPlayerSecretNumber);
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
+      {mode === 'computer' && (
+        <div className="mb-4 bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex justify-center items-center gap-4">
+          <h3 className="text-center font-medium">Your Secret Number</h3>
+          <div className="flex items-center gap-2">
+            <span className={`text-lg font-bold ${showPlayerSecretNumber ? 'text-black' : 'text-gray-500'}`}>
+              {showPlayerSecretNumber ? playerSecretNumber : '****'}
+            </span>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              onClick={togglePlayerSecretNumberVisibility}
+              className="text-cowbulls-brown"
+            >
+              {showPlayerSecretNumber ? <EyeOff size={20} /> : <Eye size={20} />}
+            </Button>
+          </div>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Player's guess area */}
         <div className="space-y-4">
