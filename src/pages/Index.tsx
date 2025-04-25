@@ -5,6 +5,7 @@ import GameSetup from "@/components/GameSetup";
 import GamePlay from "@/components/GamePlay";
 import RulesDialog from "@/components/RulesDialog";
 import VictoryDialog from "@/components/VictoryDialog";
+import PlayerNameInput from "@/components/PlayerNameInput";
 import { 
   GameHistory, 
   GameState,
@@ -18,6 +19,7 @@ const Index = () => {
   const [showRules, setShowRules] = useState(false);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [showVictory, setShowVictory] = useState(false);
+  const [playerName, setPlayerName] = useState<string>('');
   const { toast } = useToast();
 
   // Load saved game state on component mount
@@ -43,6 +45,7 @@ const Index = () => {
   const handleStartGame = (mode: 'two-player' | 'computer', playerNumber: string, opponentNumber: string) => {
     const newGameState: GameState = {
       mode,
+      playerName,
       playerSecretNumber: playerNumber,
       opponentSecretNumber: opponentNumber,
       playerGuessHistory: [],
@@ -119,11 +122,14 @@ const Index = () => {
         />
         
         <main className="mt-8">
-          {!gameState ? (
+          {!playerName ? (
+            <PlayerNameInput onNameSubmit={setPlayerName} />
+          ) : !gameState ? (
             <GameSetup onStartGame={handleStartGame} />
           ) : (
             <GamePlay 
               mode={gameState.mode}
+              playerName={gameState.playerName}
               playerSecretNumber={gameState.playerSecretNumber}
               opponentSecretNumber={gameState.opponentSecretNumber}
               onGameOver={handleGameOver}
