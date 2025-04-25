@@ -13,9 +13,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateRandomNumber, isValidGuess } from "@/utils/gameUtils";
 import NumberInput from "./NumberInput";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 interface GameSetupProps {
-  onStartGame: (mode: 'two-player' | 'computer', playerNumber: string, opponentNumber: string) => void;
+  onStartGame: (
+    mode: 'two-player' | 'computer', 
+    playerNumber: string, 
+    opponentNumber: string
+  ) => void;
 }
 
 const GameSetup = ({ onStartGame }: GameSetupProps) => {
@@ -23,6 +28,8 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
   const [playerNumber, setPlayerNumber] = useState("");
   const [player2Number, setPlayer2Number] = useState("");
   const [showPlayer2Input, setShowPlayer2Input] = useState(false);
+  const [showPlayerNumberVisibility, setShowPlayerNumberVisibility] = useState(false);
+  const [showPlayer2NumberVisibility, setShowPlayer2NumberVisibility] = useState(false);
   const { toast } = useToast();
 
   const handleRandomNumber = (forPlayer = true) => {
@@ -85,6 +92,14 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
     setShowPlayer2Input(false);
   };
 
+  const togglePlayerNumberVisibility = () => {
+    setShowPlayerNumberVisibility(!showPlayerNumberVisibility);
+  };
+
+  const togglePlayer2NumberVisibility = () => {
+    setShowPlayer2NumberVisibility(!showPlayer2NumberVisibility);
+  };
+
   return (
     <div className="max-w-md mx-auto">
       <Card className="border-cowbulls-brown/30 bg-white">
@@ -103,11 +118,22 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-center mb-2 font-medium">Player 1's Secret Number</h3>
-                  <NumberInput 
-                    onComplete={setPlayerNumber} 
-                    label="Enter a 4-digit number (1-9, no repeats)" 
-                    autofocus
-                  />
+                  <div className="flex items-center gap-2">
+                    <NumberInput 
+                      onComplete={setPlayerNumber} 
+                      label="Enter a 4-digit number (1-9, no repeats)" 
+                      autofocus
+                      type={showPlayerNumberVisibility ? "text" : "password"}
+                    />
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={togglePlayerNumberVisibility}
+                      className="text-cowbulls-brown"
+                    >
+                      {showPlayerNumberVisibility ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </Button>
+                  </div>
                 </div>
                 
                 {!showPlayer2Input ? (
@@ -122,10 +148,21 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
                 ) : (
                   <div className="animate-fade-in">
                     <h3 className="text-center mb-2 font-medium">Player 2's Secret Number</h3>
-                    <NumberInput 
-                      onComplete={setPlayer2Number}
-                      label="Enter a 4-digit number (1-9, no repeats)"
-                    />
+                    <div className="flex items-center gap-2">
+                      <NumberInput 
+                        onComplete={setPlayer2Number}
+                        label="Enter a 4-digit number (1-9, no repeats)"
+                        type={showPlayer2NumberVisibility ? "text" : "password"}
+                      />
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={togglePlayer2NumberVisibility}
+                        className="text-cowbulls-brown"
+                      >
+                        {showPlayer2NumberVisibility ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </Button>
+                    </div>
                     <div className="mt-2 flex justify-center">
                       <Button 
                         variant="outline" 
@@ -143,11 +180,22 @@ const GameSetup = ({ onStartGame }: GameSetupProps) => {
             <TabsContent value="computer" className="space-y-6">
               <div>
                 <h3 className="text-center mb-2 font-medium">Your Secret Number</h3>
-                <NumberInput 
-                  onComplete={setPlayerNumber} 
-                  label="Enter a 4-digit number (1-9, no repeats)"
-                  autofocus
-                />
+                <div className="flex items-center gap-2">
+                  <NumberInput 
+                    onComplete={setPlayerNumber} 
+                    label="Enter a 4-digit number (1-9, no repeats)"
+                    autofocus
+                    type={showPlayerNumberVisibility ? "text" : "password"}
+                  />
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    onClick={togglePlayerNumberVisibility}
+                    className="text-cowbulls-brown"
+                  >
+                    {showPlayerNumberVisibility ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </Button>
+                </div>
                 <div className="mt-2 flex justify-center">
                   <Button 
                     variant="outline" 
