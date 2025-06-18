@@ -2,6 +2,8 @@
 
 Game Overview
 
+URL :- https://bullseye-cow-clues.lovable.app/
+
 Note: We developed this using Lovable AI, but the inner algorithms were designed by us.
 
 Rules of the Game:-
